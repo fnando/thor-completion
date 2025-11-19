@@ -1,0 +1,208 @@
+{
+  "title": "Shell Completion Schema",
+  "description": "A universal schema for defining shell completions that can be converted to bash, zsh, fish, etc.",
+  "type": "object",
+  "required": ["name", "commands"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of the CLI program"
+    },
+    "description": {
+      "type": "string",
+      "description": "A brief description of the CLI program"
+    },
+    "version": {
+      "type": "string",
+      "description": "The version of the CLI program"
+    },
+    "commands": {
+      "type": "array",
+      "description": "List of available commands",
+      "items": {
+        "$ref": "#/definitions/command"
+      }
+    },
+    "globalOptions": {
+      "type": "array",
+      "description": "Options available to all commands",
+      "items": {
+        "$ref": "#/definitions/option"
+      }
+    }
+  },
+  "definitions": {
+    "command": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The command name"
+        },
+        "description": {
+          "type": "string",
+          "description": "A brief description of what the command does"
+        },
+        "aliases": {
+          "type": "array",
+          "description": "Alternative names for this command",
+          "items": {
+            "type": "string"
+          }
+        },
+        "options": {
+          "type": "array",
+          "description": "Command-specific options",
+          "items": {
+            "$ref": "#/definitions/option"
+          }
+        },
+        "arguments": {
+          "type": "array",
+          "description": "Positional arguments for the command",
+          "items": {
+            "$ref": "#/definitions/argument"
+          }
+        },
+        "subcommands": {
+          "type": "array",
+          "description": "Nested subcommands",
+          "items": {
+            "$ref": "#/definitions/command"
+          }
+        },
+        "hidden": {
+          "type": "boolean",
+          "description": "Whether this command should be hidden from completions",
+          "default": false
+        }
+      }
+    },
+    "option": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The long option name (without --)"
+        },
+        "short": {
+          "oneOf": [
+            {
+              "type": "string",
+              "description": "The short option flag (single character)",
+              "pattern": "^[a-zA-Z0-9]+$"
+            },
+            {
+              "type": "array",
+              "description": "Multiple short option flags",
+              "items": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9]+$"
+              }
+            }
+          ]
+        },
+        "description": {
+          "type": "string",
+          "description": "A brief description of the option"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["boolean", "string", "integer", "float", "array", "hash"],
+          "description": "The type of value this option accepts",
+          "default": "boolean"
+        },
+        "required": {
+          "type": "boolean",
+          "description": "Whether this option is required",
+          "default": false
+        },
+        "default": {
+          "description": "The default value for this option"
+        },
+        "enum": {
+          "type": "array",
+          "description": "Valid values for this option",
+          "items": {
+            "type": "string"
+          }
+        },
+        "completion": {
+          "$ref": "#/definitions/completion"
+        },
+        "repeatable": {
+          "type": "boolean",
+          "description": "Whether this option can be specified multiple times",
+          "default": false
+        },
+        "hidden": {
+          "type": "boolean",
+          "description": "Whether this option should be hidden from completions",
+          "default": false
+        }
+      }
+    },
+    "argument": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The argument name"
+        },
+        "description": {
+          "type": "string",
+          "description": "A brief description of the argument"
+        },
+        "required": {
+          "type": "boolean",
+          "description": "Whether this argument is required",
+          "default": true
+        },
+        "variadic": {
+          "type": "boolean",
+          "description": "Whether this argument accepts multiple values",
+          "default": false
+        },
+        "completion": {
+          "$ref": "#/definitions/completion"
+        }
+      }
+    },
+    "completion": {
+      "type": "object",
+      "description": "Defines how to complete values for this option or argument",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["static", "dynamic", "file", "directory", "command"],
+          "description": "The type of completion to perform"
+        },
+        "values": {
+          "type": "array",
+          "description": "Static list of completion values (for type: static)",
+          "items": {
+            "type": "string"
+          }
+        },
+        "command": {
+          "type": "string",
+          "description": "Shell command to generate completions (for type: dynamic)"
+        },
+        "pattern": {
+          "type": "string",
+          "description": "File glob pattern (for type: file)"
+        },
+        "extensions": {
+          "type": "array",
+          "description": "File extensions to complete (for type: file)",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

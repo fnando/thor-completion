@@ -1,0 +1,20 @@
+---
+inherit_gem:
+  rubocop-fnando: .rubocop.yml
+
+AllCops:
+  TargetRubyVersion: 3.4
+  NewCops: enable
+  Exclude:
+    - vendor/**/*
+    - gemfiles/**/*
+
+Naming/FileName:
+  Exclude:
+    - lib/thor-completion.rb
+
+Gemspec/AttributeAssignment:
+  Enabled: false
+
+Layout/LineLength:
+  Enabled: false
