@@ -11,10 +11,11 @@ Prefix your message with one of the following:
 - [Security] in case of vulnerabilities.
 -->
 
-## Unreleased
+## v0.0.5
 
 - [Fixed] Remove position number from variadic arguments in zsh completions.
-- [Fixed] Prioritize subcommand state handling over arguments for commands with subcommands.
+- [Fixed] Prioritize subcommand state handling over arguments for commands with
+  subcommands.
 
 ## v0.0.4
 
