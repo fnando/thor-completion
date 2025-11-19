@@ -152,7 +152,7 @@ class Thor
         end
 
         # Add positional arguments
-        if cmd[:arguments]&.any?
+        if cmd[:arguments]&.any? && !cmd[:subcommands]&.any?
           cmd[:arguments].each_with_index do |arg, idx|
             args << format_argument(arg, idx + 1)
           end
@@ -280,14 +280,15 @@ class Thor
         arg_name = arg[:name]
         arg_desc = arg[:description] || arg_name
         variadic = arg[:variadic] ? "*" : ""
+        pos = variadic.empty? ? position.to_s : ""
 
         if arg[:completion]
           completion = format_completion(arg[:completion])
-          "'#{variadic}#{position}:#{arg_desc}:#{completion}'"
+          "'#{variadic}#{pos}:#{arg_desc}:#{completion}'"
         elsif arg[:required] == false
-          "'#{variadic}#{position}::#{arg_desc}:_files'"
+          "'#{variadic}#{pos}::#{arg_desc}:_files'"
         else
-          "'#{variadic}#{position}:#{arg_desc}:_files'"
+          "'#{variadic}#{pos}:#{arg_desc}:_files'"
         end
       end
 
