@@ -11,7 +11,7 @@ Prefix your message with one of the following:
 - [Security] in case of vulnerabilities.
 -->
 
-## Unreleased
+## v0.0.4
 
 - [Fixed] Escape newlines in option descriptions for zsh completions.
 - [Fixed] Properly escape single quotes in zsh completion strings.
