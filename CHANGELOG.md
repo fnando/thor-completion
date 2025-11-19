@@ -15,6 +15,7 @@ Prefix your message with one of the following:
 
 - [Fixed] Fix completion property format to match schema (object instead of
   string).
+- [Fixed] Map Thor's `numeric` type to schema's `float` type.
 
 ## v0.0.1
 

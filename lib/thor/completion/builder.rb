@@ -56,6 +56,15 @@ class Thor
         end
       end
 
+      def self.normalize_type(thor_type)
+        case thor_type.to_s
+        when "numeric"
+          "float"
+        else
+          thor_type.to_s
+        end
+      end
+
       def self.resolve_completion(value)
         value = value.to_s
 
@@ -124,7 +133,7 @@ class Thor
           short_opts = option.aliases.map { dasherize.call(_1.gsub(/^-+/, "")) }
           opt_hash = {
             name:,
-            type: option.type.to_s,
+            type: normalize_type(option.type),
             description: option.description || "",
             required: option.required,
             repeatable: option.repeatable || false,
@@ -148,7 +157,7 @@ class Thor
           if option.type == :boolean
             list << {
               name: "no-#{name}",
-              type: option.type.to_s,
+              type: normalize_type(option.type),
               description: "",
               required: false,
               repeatable: option.repeatable || false,
@@ -157,7 +166,7 @@ class Thor
 
             list << {
               name: "skip-#{name}",
-              type: option.type.to_s,
+              type: normalize_type(option.type),
               description: "",
               required: false,
               repeatable: option.repeatable || false,
