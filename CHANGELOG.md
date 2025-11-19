@@ -11,11 +11,14 @@ Prefix your message with one of the following:
 - [Security] in case of vulnerabilities.
 -->
 
+## v0.0.3
+
+- [Fixed] Map Thor's `numeric` type to schema's `float` type.
+
 ## v0.0.2
 
 - [Fixed] Fix completion property format to match schema (object instead of
   string).
-- [Fixed] Map Thor's `numeric` type to schema's `float` type.
 
 ## v0.0.1
 
