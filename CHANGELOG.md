@@ -11,6 +11,12 @@ Prefix your message with one of the following:
 - [Security] in case of vulnerabilities.
 -->
 
+## Unreleased
+
+- [Fixed] Escape newlines in option descriptions for zsh completions.
+- [Fixed] Properly escape single quotes in zsh completion strings.
+- [Fixed] Properly normalize command names.
+
 ## v0.0.3
 
 - [Fixed] Map Thor's `numeric` type to schema's `float` type.

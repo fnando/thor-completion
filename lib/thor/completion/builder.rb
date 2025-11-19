@@ -7,8 +7,8 @@ class Thor
 
       def self.call(name:, description:, version:, cli:)
         schema = {
-          name:,
-          description:,
+          name: normalize_name(name),
+          description: normalize_description(description),
           version:,
           commands: [],
           subcommands: [],
@@ -24,6 +24,25 @@ class Thor
         schema
       end
 
+      def self.dasherize(text) = text.to_s.tr("_", "-")
+
+      def self.normalize_description(description)
+        description.to_s.gsub(/(\r?\n)+/, " ")
+      end
+
+      def self.normalize_name(name)
+        case name
+        when "_run"
+          # Thor reserves the name `run` for its internal use.
+          # I've done ARGV manipulation to replace `run` with `_run` so that
+          # users can still use `run` as a command name. Let's assume this
+          # is the case and rename it back to `run`.
+          "run"
+        else
+          dasherize(name)
+        end
+      end
+
       def self.build_command(cli, parent)
         cli.options.each_value do |option|
           parent[:options] += build_option(option)
@@ -31,8 +50,8 @@ class Thor
 
         cli.all_commands.each_value do |command|
           cmd_schema = {
-            name: command.name,
-            description: command.description || "",
+            name: normalize_name(command.name),
+            description: normalize_description(command.description),
             options: command.options.each_value.flat_map { build_option(_1) }
           }
 
@@ -78,8 +97,8 @@ class Thor
       def self.build_subcommands(cli, parent)
         cli.all_commands.each_value do |command|
           subcmd_schema = {
-            name: command.name,
-            description: command.description || "",
+            name: normalize_name(command.name),
+            description: normalize_description(command.description),
             options: command.options.each_value.flat_map { build_option(_1) }
           }
 
@@ -111,7 +130,7 @@ class Thor
 
         values.map do |type, name|
           arg_hash = {
-            name: name.to_s,
+            name: normalize_name(name),
             description: name.to_s.tr("_", " ").capitalize,
             required: type == :req,
             variadic: type == :rest
@@ -126,15 +145,14 @@ class Thor
       end
 
       def self.build_option(option)
-        dasherize = proc { _1.to_s.tr("_", "-") }
-        name = dasherize.call(option.name)
+        name = dasherize(option.name)
 
         [].tap do |list|
-          short_opts = option.aliases.map { dasherize.call(_1.gsub(/^-+/, "")) }
+          short_opts = option.aliases.map { dasherize(_1.gsub(/^-+/, "")) }
           opt_hash = {
-            name:,
+            name: normalize_name(name),
             type: normalize_type(option.type),
-            description: option.description || "",
+            description: normalize_description(option.description),
             required: option.required,
             repeatable: option.repeatable || false,
             default: option.default,

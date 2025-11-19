@@ -293,7 +293,7 @@ class Thor
 
       private def add_completion_spec(spec, completion)
         comp_spec = format_completion(completion)
-        spec.sub(/\]$/, "]:value:#{comp_spec}'")
+        spec + "]:value:#{comp_spec}'"
       end
 
       private def format_completion(completion)
@@ -324,11 +324,11 @@ class Thor
       end
 
       private def escape_description(desc)
-        desc.to_s.gsub(/[\[\]']/, '\\\\\&')
+        desc.to_s.gsub("\n", " ").gsub("'", "'\\\\''"  ).gsub(/[\[\]]/, '\\\\\&')
       end
 
       private def escape_value(value)
-        value.to_s.gsub(/[\s']/, '\\\\\&')
+        value.to_s.gsub("'", "'\\\\''"  ).gsub(/[\s]/, '\\\\\&')
       end
 
       private def quote(str)

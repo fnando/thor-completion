@@ -190,4 +190,56 @@ class ZSH < Minitest::Test
 
     assert_includes result, "quiet"
   end
+
+  test "escapes single quotes in descriptions" do
+    schema = {
+      name: "mycli",
+      commands: [
+        {
+          name: "test",
+          description: "Test command",
+          options: [
+            {
+              name: "cursor-style",
+              description: "The cursor style like 'bar' or 'block'",
+              type: "string"
+            }
+          ]
+        }
+      ]
+    }
+
+    converter = Thor::Completion::ZSH.new(schema)
+    result = converter.call
+
+    # Single quotes should be escaped using '\'' pattern for zsh
+    assert_includes result, "The cursor style like '\\''bar'\\'' or '\\''block'\\''"
+  end
+
+  test "escapes newlines in descriptions" do
+    schema = {
+      name: "mycli",
+      commands: [
+        {
+          name: "test",
+          description: "Test command",
+          options: [
+            {
+              name: "multiline",
+              description: "Line one\nLine two",
+              type: "string"
+            }
+          ]
+        }
+      ]
+    }
+
+    converter = Thor::Completion::ZSH.new(schema)
+    result = converter.call
+
+    # Newlines should be replaced with spaces
+    assert_includes result, "Line one Line two"
+    # Should not contain literal newlines
+    refute_includes result, "Line one\nLine two"
+  end
 end
