@@ -134,7 +134,7 @@ class Thor
           }
 
           if (completion = resolve_completion(option.name))
-            opt_hash[:completion] = completion
+            opt_hash[:completion] = {type: completion}
           end
 
           # Only add short if there are aliases

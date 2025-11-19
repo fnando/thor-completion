@@ -11,6 +11,11 @@ Prefix your message with one of the following:
 - [Security] in case of vulnerabilities.
 -->
 
+## Unreleased
+
+- [Fixed] Fix completion property format to match schema (object instead of
+  string).
+
 ## v0.0.1
 
 - [Changed] Support ruby 3.3+.
