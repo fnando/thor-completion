@@ -11,6 +11,10 @@ Prefix your message with one of the following:
 - [Security] in case of vulnerabilities.
 -->
 
+## v0.0.1
+
+- [Changed] Support ruby 3.3+.
+
 ## v0.0.0
 
 - Initial release.
