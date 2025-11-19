@@ -33,7 +33,7 @@ class Thor
           cmd_schema = {
             name: command.name,
             description: command.description || "",
-            options: command.options.each_value.flat_map { build_option(it) }
+            options: command.options.each_value.flat_map { build_option(_1) }
           }
 
           # Extract positional arguments from method parameters
@@ -71,7 +71,7 @@ class Thor
           subcmd_schema = {
             name: command.name,
             description: command.description || "",
-            options: command.options.each_value.flat_map { build_option(it) }
+            options: command.options.each_value.flat_map { build_option(_1) }
           }
 
           # Extract positional arguments from method parameters
@@ -95,9 +95,10 @@ class Thor
       end
 
       def self.extract_arguments(method)
+        opts = %i[req opt rest]
         values = method
                  .parameters
-                 .select {|type, _| %i[req opt rest].include?(type) } # rubocop:disable Style/HashSlice
+                 .select {|type, _| opts.include?(type) } # rubocop:disable Style/HashSlice
 
         values.map do |type, name|
           arg_hash = {
@@ -116,11 +117,11 @@ class Thor
       end
 
       def self.build_option(option)
-        dasherize = proc { it.to_s.tr("_", "-") }
+        dasherize = proc { _1.to_s.tr("_", "-") }
         name = dasherize.call(option.name)
 
         [].tap do |list|
-          short_opts = option.aliases.map { dasherize.call(it.gsub(/^-+/, "")) }
+          short_opts = option.aliases.map { dasherize.call(_1.gsub(/^-+/, "")) }
           opt_hash = {
             name:,
             type: option.type.to_s,

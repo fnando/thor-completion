@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.summary     = "Generate shell completions for Thor CLIs."
   spec.description = spec.summary
   spec.license     = "MIT"
-  spec.required_ruby_version = Gem::Requirement.new(">= 3.4.0")
+  spec.required_ruby_version = Gem::Requirement.new(">= 3.3.0")
 
   github_url = "https://github.com/fnando/thor-completion"
   github_tree_url = "#{github_url}/tree/v#{spec.version}"
