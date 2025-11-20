@@ -325,11 +325,11 @@ class Thor
       end
 
       private def escape_description(desc)
-        desc.to_s.gsub("\n", " ").gsub("'", "'\\\\''"  ).gsub(/[\[\]]/, '\\\\\&')
+        desc.to_s.tr("\n", " ").gsub("'", "'\\\\''").gsub(/[\[\]]/, '\\\\\&')
       end
 
       private def escape_value(value)
-        value.to_s.gsub("'", "'\\\\''"  ).gsub(/[\s]/, '\\\\\&')
+        value.to_s.gsub("'", "'\\\\''").gsub(/\s/, '\\\\\&')
       end
 
       private def quote(str)
